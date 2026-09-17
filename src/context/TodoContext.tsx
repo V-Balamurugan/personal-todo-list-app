@@ -188,7 +188,7 @@ export const TodoProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const target = todos.find((t) => t.id === todoId);
       if (!target) return;
 
-      const updatedSubtasks = target.subtasks.map((st) =>
+      const updatedSubtasks = (target.subtasks || []).map((st) =>
         st.id === subtaskId ? { ...st, completed: !st.completed } : st
       );
 

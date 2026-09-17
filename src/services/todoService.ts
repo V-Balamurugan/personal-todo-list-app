@@ -307,7 +307,7 @@ export async function toggleSubtask(
   subtaskId: string,
   isDemoMode: boolean
 ): Promise<void> {
-  const updatedSubtasks: Subtask[] = todo.subtasks.map((st) =>
+  const updatedSubtasks: Subtask[] = (todo.subtasks || []).map((st) =>
     st.id === subtaskId ? { ...st, completed: !st.completed } : st
   );
 

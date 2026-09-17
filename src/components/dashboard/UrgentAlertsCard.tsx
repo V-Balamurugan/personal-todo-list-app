@@ -4,10 +4,21 @@ import { useTodos } from '../../context/TodoContext';
 
 export const UrgentAlertsCard: React.FC = () => {
   const { overdueTodos, overdueCount, setActiveView, rescheduleToToday } = useTodos();
+  const [isRescheduling, setIsRescheduling] = React.useState(false);
 
   if (overdueCount === 0) return null;
 
   const firstOverdue = overdueTodos[0];
+
+  const handleReschedule = async () => {
+    if (!firstOverdue || isRescheduling) return;
+    setIsRescheduling(true);
+    try {
+      await rescheduleToToday(firstOverdue.id);
+    } finally {
+      setIsRescheduling(false);
+    }
+  };
 
   return (
     <div className="p-4 sm:p-5 rounded-2xl sm:rounded-3xl bg-rose-500/10 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-900/60 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 animate-slide-down">
@@ -39,11 +50,12 @@ export const UrgentAlertsCard: React.FC = () => {
         {firstOverdue && (
           <button
             type="button"
-            onClick={() => rescheduleToToday(firstOverdue.id)}
-            className="flex-1 sm:flex-initial py-2 px-3.5 bg-rose-600 hover:bg-rose-700 text-white text-xs font-semibold rounded-xl flex items-center justify-center gap-1.5 shadow-sm transition-all"
+            onClick={handleReschedule}
+            disabled={isRescheduling}
+            className="flex-1 sm:flex-initial py-2 px-3.5 bg-rose-600 hover:bg-rose-700 disabled:opacity-50 text-white text-xs font-semibold rounded-xl flex items-center justify-center gap-1.5 shadow-sm transition-all"
           >
-            <RotateCcw className="w-3.5 h-3.5" />
-            <span>Reschedule to Today</span>
+            <RotateCcw className={`w-3.5 h-3.5 ${isRescheduling ? 'animate-spin' : ''}`} />
+            <span>{isRescheduling ? 'Rescheduling...' : 'Reschedule to Today'}</span>
           </button>
         )}
         <button

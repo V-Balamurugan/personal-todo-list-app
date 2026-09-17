@@ -23,8 +23,8 @@ export const SubtaskList: React.FC<SubtaskListProps> = ({
   const totalCount = subtasks.length;
   const progress = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0;
 
-  const handleAdd = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleAdd = (e?: React.SyntheticEvent) => {
+    if (e) e.preventDefault();
     if (!newSubtaskTitle.trim() || !onAddSubtask) return;
     onAddSubtask(newSubtaskTitle.trim());
     setNewSubtaskTitle('');
@@ -55,19 +55,21 @@ export const SubtaskList: React.FC<SubtaskListProps> = ({
             key={st.id}
             className="flex items-center justify-between gap-2 p-2 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/60 dark:border-slate-700/60 group"
           >
-            <label className="flex items-center gap-2.5 flex-1 min-w-0 cursor-pointer select-none">
-              <div
+            <div className="flex items-center gap-2.5 flex-1 min-w-0 select-none">
+              <button
+                type="button"
                 onClick={() => onToggle && onToggle(st.id)}
-                className={`w-4 h-4 rounded-md flex items-center justify-center transition-all ${
+                className={`w-4 h-4 rounded-md flex items-center justify-center transition-all flex-shrink-0 ${
                   st.completed
                     ? 'bg-indigo-600 text-white shadow-sm'
                     : 'border-2 border-slate-300 dark:border-slate-600 hover:border-indigo-500'
                 }`}
               >
                 {st.completed && <Check className="w-3 h-3 stroke-[3]" />}
-              </div>
+              </button>
               <span
-                className={`text-xs truncate transition-all ${
+                onClick={() => onToggle && onToggle(st.id)}
+                className={`text-xs truncate transition-all cursor-pointer ${
                   st.completed
                     ? 'line-through text-slate-400 dark:text-slate-500'
                     : 'text-slate-800 dark:text-slate-200 font-medium'
@@ -75,7 +77,7 @@ export const SubtaskList: React.FC<SubtaskListProps> = ({
               >
                 {st.title}
               </span>
-            </label>
+            </div>
 
             {!readOnly && onRemoveSubtask && (
               <button

@@ -71,7 +71,7 @@ export const TodoCard: React.FC<TodoCardProps> = ({ todo, onEdit }) => {
             )}
 
             {/* Priority dot / badge */}
-            <span className={`text-[10px] font-bold px-1.5 py-0.2 rounded uppercase ${priorityMeta.badgeClass}`}>
+            <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded uppercase ${priorityMeta.badgeClass}`}>
               {priorityMeta.label}
             </span>
 

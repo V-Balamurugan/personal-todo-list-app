@@ -83,8 +83,15 @@ export function checkTodoReminders(
 
     const diffMinutes = differenceInMinutes(targetDate, now);
 
-    // 1. Check Upcoming Reminder
-    if (diffMinutes > 0 && diffMinutes <= 30) {
+    // 1. Check Upcoming Reminder based on user-chosen reminder setting
+    let reminderThreshold = 15; // default 15m
+    if (todo.reminder === 'at_due') reminderThreshold = 5;
+    else if (todo.reminder === '15m') reminderThreshold = 15;
+    else if (todo.reminder === '30m') reminderThreshold = 30;
+    else if (todo.reminder === '1h') reminderThreshold = 60;
+    else if (todo.reminder === '1d') reminderThreshold = 1440;
+
+    if (diffMinutes > 0 && diffMinutes <= reminderThreshold) {
       const eventKey = `${todo.id}_upcoming_${todo.dueDate}_${todo.dueTime || 'allDay'}`;
       if (!notifiedEvents.has(eventKey)) {
         notifiedEvents.add(eventKey);
@@ -123,7 +130,9 @@ export function checkTodoReminders(
         const title = `Task Overdue: ${todo.title}`;
         const message = `This task was due ${formatTaskDueDate(todo.dueDate, todo.dueTime)}`;
 
-        if (soundEnabled) {
+        // Only play audible tone for freshly overdue items (within past 60 mins) to avoid jarring noise on initial load
+        const overdueMinutes = Math.abs(diffMinutes);
+        if (soundEnabled && overdueMinutes <= 60) {
           soundService.playOverdueSound();
         }
 

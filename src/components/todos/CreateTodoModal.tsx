@@ -36,7 +36,7 @@ export const CreateTodoModal: React.FC<CreateTodoModalProps> = ({
   const [dueDate, setDueDate] = useState<string>(getTodayDateString());
   const [dueTime, setDueTime] = useState<string>('18:00');
   const [priority, setPriority] = useState<Priority>('medium');
-  const [category, setCategory] = useState<string>('Work');
+  const [category, setCategory] = useState<string>('Coding & DSA');
   const [reminder, setReminder] = useState<ReminderOffset>('15m');
   const [subtasks, setSubtasks] = useState<Subtask[]>([]);
   const [customCategory, setCustomCategory] = useState('');
@@ -49,7 +49,7 @@ export const CreateTodoModal: React.FC<CreateTodoModalProps> = ({
       setDueDate(preset.dueDate || getTodayDateString());
       setDueTime(preset.dueTime || '18:00');
       setPriority(preset.priority || 'medium');
-      setCategory(preset.category || 'Work');
+      setCategory(preset.category || 'Coding & DSA');
       setReminder(preset.reminder || '15m');
       setSubtasks(preset.subtasks || []);
     } else {
@@ -58,11 +58,21 @@ export const CreateTodoModal: React.FC<CreateTodoModalProps> = ({
       setDueDate(getTodayDateString());
       setDueTime('18:00');
       setPriority('medium');
-      setCategory('Work');
+      setCategory('Coding & DSA');
       setReminder('15m');
       setSubtasks([]);
     }
   }, [preset, isOpen]);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isOpen) {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
 
   if (!isOpen) return null;
 
