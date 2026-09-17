@@ -8,6 +8,7 @@ import {
   ChevronDown,
   ChevronUp,
   RotateCcw,
+  ArrowRight,
 } from 'lucide-react';
 import type { Todo } from '../../types/todo';
 import { PRIORITY_CONFIG } from '../../types/todo';
@@ -16,6 +17,7 @@ import {
   formatTaskDueDate,
   isTaskOverdue,
   isTaskDueToday,
+  isTaskFromPreviousDay,
 } from '../../utils/dateUtils';
 import { SubtaskList } from './SubtaskList';
 
@@ -25,11 +27,12 @@ interface TodoCardProps {
 }
 
 export const TodoCard: React.FC<TodoCardProps> = ({ todo, onEdit }) => {
-  const { toggleComplete, deleteTodo, toggleSubtaskCheck, rescheduleToToday } = useTodos();
+  const { toggleComplete, deleteTodo, toggleSubtaskCheck, rescheduleToToday, rescheduleToTomorrow } = useTodos();
   const [showSubtasks, setShowSubtasks] = useState(false);
 
   const priorityMeta = PRIORITY_CONFIG[todo.priority] || PRIORITY_CONFIG.medium;
   const isOverdue = !todo.completed && isTaskOverdue(todo.dueDate, todo.dueTime);
+  const isFromPrevDay = !todo.completed && isTaskFromPreviousDay(todo.dueDate);
   const isToday = !todo.completed && isTaskDueToday(todo.dueDate);
 
   const subtasksCount = todo.subtasks?.length || 0;
@@ -127,15 +130,27 @@ export const TodoCard: React.FC<TodoCardProps> = ({ todo, onEdit }) => {
               </button>
             )}
 
-            {isOverdue && (
-              <button
-                type="button"
-                onClick={() => rescheduleToToday(todo.id)}
-                className="text-xs font-bold text-rose-600 dark:text-rose-400 hover:underline flex items-center gap-1"
-              >
-                <RotateCcw className="w-3 h-3" />
-                <span>Move to Today</span>
-              </button>
+            {(isOverdue || isFromPrevDay) && (
+              <div className="flex items-center gap-1.5 flex-wrap">
+                <button
+                  type="button"
+                  onClick={() => rescheduleToToday(todo.id)}
+                  title="Move deadline to Today"
+                  className="text-xs font-bold text-rose-600 dark:text-rose-400 hover:text-rose-700 dark:hover:text-rose-300 hover:underline flex items-center gap-1 bg-rose-50 dark:bg-rose-950/60 px-2 py-0.5 rounded-lg border border-rose-200/80 dark:border-rose-900/80 transition-colors"
+                >
+                  <RotateCcw className="w-3 h-3" />
+                  <span>Move to Today</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => rescheduleToTomorrow(todo.id)}
+                  title="Move deadline to Tomorrow"
+                  className="text-xs font-semibold text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 hover:underline flex items-center gap-1 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-lg border border-slate-200 dark:border-slate-700 transition-colors"
+                >
+                  <ArrowRight className="w-3 h-3" />
+                  <span>To Tomorrow</span>
+                </button>
+              </div>
             )}
           </div>
 

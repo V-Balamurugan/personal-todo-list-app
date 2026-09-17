@@ -34,7 +34,7 @@ export const MainContentView: React.FC = () => {
     allCount,
     selectedCategory,
     setSelectedCategory,
-    rescheduleToToday,
+    rolloverPreviousDayTasks,
     clearAllCompleted,
   } = useTodos();
 
@@ -112,26 +112,38 @@ export const MainContentView: React.FC = () => {
           />
         </div>
 
-        {/* Overdue section if any exist */}
+        {/* Overdue / Previous Day section if any exist */}
         {overdueCount > 0 && (
           <div className="space-y-3 pt-4">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between flex-wrap gap-2">
               <div className="flex items-center gap-2">
                 <AlertTriangle className="w-5 h-5 text-rose-500" />
                 <h3 className="text-base font-bold text-slate-900 dark:text-white font-display">
-                  Overdue Items
+                  Overdue & Previous Day
                 </h3>
                 <span className="px-2 py-0.5 rounded-full text-xs font-bold bg-rose-50 dark:bg-rose-950 text-rose-600 dark:text-rose-400 border border-rose-200 dark:border-rose-900">
                   {overdueCount}
                 </span>
               </div>
-              <button
-                type="button"
-                onClick={() => setActiveView('overdue')}
-                className="text-xs font-semibold text-rose-600 dark:text-rose-400 hover:underline"
-              >
-                Manage Overdue
-              </button>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => rolloverPreviousDayTasks('today')}
+                  className="text-xs font-bold text-rose-600 dark:text-rose-400 hover:underline flex items-center gap-1"
+                >
+                  <RotateCcw className="w-3 h-3" />
+                  <span>Move All to Today</span>
+                </button>
+                <span className="text-slate-300 dark:text-slate-700">•</span>
+                <button
+                  type="button"
+                  onClick={() => rolloverPreviousDayTasks('tomorrow')}
+                  className="text-xs font-semibold text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:underline flex items-center gap-1"
+                >
+                  <Calendar className="w-3 h-3 text-indigo-500" />
+                  <span>To Tomorrow</span>
+                </button>
+              </div>
             </div>
 
             <TodoList todos={overdueTodos.slice(0, 3)} />
@@ -211,18 +223,24 @@ export const MainContentView: React.FC = () => {
           </div>
 
           {overdueCount > 0 && (
-            <button
-              type="button"
-              onClick={async () => {
-                for (const t of overdueTodos) {
-                  await rescheduleToToday(t.id);
-                }
-              }}
-              className="py-2.5 px-4 bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold rounded-xl flex items-center gap-2 shadow-sm transition-all self-start sm:self-auto"
-            >
-              <RotateCcw className="w-4 h-4" />
-              <span>Reschedule All to Today</span>
-            </button>
+            <div className="flex items-center gap-2 flex-wrap self-start sm:self-auto">
+              <button
+                type="button"
+                onClick={() => rolloverPreviousDayTasks('today')}
+                className="py-2.5 px-4 bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold rounded-xl flex items-center gap-2 shadow-sm transition-all"
+              >
+                <RotateCcw className="w-4 h-4" />
+                <span>Move All to Today</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => rolloverPreviousDayTasks('tomorrow')}
+                className="py-2.5 px-4 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 text-xs font-semibold rounded-xl flex items-center gap-2 shadow-sm transition-all"
+              >
+                <Calendar className="w-4 h-4 text-indigo-500" />
+                <span>Move All to Tomorrow</span>
+              </button>
+            </div>
           )}
         </div>
 

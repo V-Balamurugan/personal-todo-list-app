@@ -17,7 +17,9 @@ import {
   isTaskDueToday,
   isTaskOverdue,
   isTaskUpcoming,
+  isTaskFromPreviousDay,
   getTodayDateString,
+  getTomorrowDateString,
   parseTaskDateTime,
 } from '../utils/dateUtils';
 
@@ -49,17 +51,22 @@ interface TodoContextType {
   deleteTodo: (id: string) => Promise<void>;
   toggleSubtaskCheck: (todoId: string, subtaskId: string) => Promise<void>;
   rescheduleToToday: (id: string) => Promise<void>;
+  rescheduleToTomorrow: (id: string) => Promise<void>;
+  rescheduleTodo: (id: string, newDate: string, newTime?: string) => Promise<void>;
+  rolloverPreviousDayTasks: (target: 'today' | 'tomorrow') => Promise<void>;
   clearAllCompleted: () => Promise<void>;
   // Filtered lists and stats
   filteredTodos: Todo[];
   todayTodos: Todo[];
   upcomingTodos: Todo[];
   overdueTodos: Todo[];
+  previousDayTodos: Todo[];
   completedTodos: Todo[];
   todayCount: number;
   completedCount: number;
   pendingCount: number;
   overdueCount: number;
+  previousDayCount: number;
   allCount: number;
   completionRate: number;
 }
@@ -213,6 +220,60 @@ export const TodoProvider: React.FC<{ children: React.ReactNode }> = ({ children
     [user, isDemoMode]
   );
 
+  const rescheduleToTomorrow = useCallback(
+    async (id: string) => {
+      if (!user) return;
+      await updateTodoItem(
+        id,
+        user.uid,
+        {
+          dueDate: getTomorrowDateString(),
+          dueTime: '18:00',
+        },
+        isDemoMode
+      );
+    },
+    [user, isDemoMode]
+  );
+
+  const rescheduleTodo = useCallback(
+    async (id: string, newDate: string, newTime?: string) => {
+      if (!user) return;
+      await updateTodoItem(
+        id,
+        user.uid,
+        {
+          dueDate: newDate,
+          dueTime: newTime || '18:00',
+        },
+        isDemoMode
+      );
+    },
+    [user, isDemoMode]
+  );
+
+  const rolloverPreviousDayTasks = useCallback(
+    async (target: 'today' | 'tomorrow') => {
+      if (!user) return;
+      const targetDate = target === 'today' ? getTodayDateString() : getTomorrowDateString();
+      const targets = todos.filter(
+        (t) => !t.completed && (isTaskOverdue(t.dueDate, t.dueTime) || isTaskFromPreviousDay(t.dueDate))
+      );
+      for (const t of targets) {
+        await updateTodoItem(
+          t.id,
+          user.uid,
+          {
+            dueDate: targetDate,
+            dueTime: t.dueTime || '18:00',
+          },
+          isDemoMode
+        );
+      }
+    },
+    [user, todos, isDemoMode]
+  );
+
   const clearAllCompleted = useCallback(async () => {
     if (!user) return;
     await clearCompletedTodos(user.uid, todos, isDemoMode);
@@ -231,12 +292,17 @@ export const TodoProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return todos.filter((t) => !t.completed && isTaskOverdue(t.dueDate, t.dueTime));
   }, [todos]);
 
+  const previousDayTodos = useMemo(() => {
+    return todos.filter((t) => !t.completed && isTaskFromPreviousDay(t.dueDate));
+  }, [todos]);
+
   const completedTodos = useMemo(() => {
     return todos.filter((t) => t.completed);
   }, [todos]);
 
   const todayCount = todayTodos.length;
   const overdueCount = overdueTodos.length;
+  const previousDayCount = previousDayTodos.length;
   const completedCount = completedTodos.length;
   const pendingCount = todos.filter((t) => !t.completed).length;
   const allCount = todos.length;
@@ -347,16 +413,21 @@ export const TodoProvider: React.FC<{ children: React.ReactNode }> = ({ children
         deleteTodo,
         toggleSubtaskCheck,
         rescheduleToToday,
+        rescheduleToTomorrow,
+        rescheduleTodo,
+        rolloverPreviousDayTasks,
         clearAllCompleted,
         filteredTodos,
         todayTodos,
         upcomingTodos,
         overdueTodos,
+        previousDayTodos,
         completedTodos,
         todayCount,
         completedCount,
         pendingCount,
         overdueCount,
+        previousDayCount,
         allCount,
         completionRate,
       }}

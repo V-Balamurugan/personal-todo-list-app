@@ -26,6 +26,27 @@ export function getTomorrowDateString(): string {
 }
 
 /**
+ * Returns a date string formatted as YYYY-MM-DD offset by N days from today
+ */
+export function getDaysOffsetDateString(daysOffset: number): string {
+  return format(addDays(new Date(), daysOffset), 'yyyy-MM-dd');
+}
+
+/**
+ * Checks if a task was scheduled for yesterday or a previous calendar day
+ */
+export function isTaskFromPreviousDay(dueDate?: string): boolean {
+  if (!dueDate) return false;
+  try {
+    const taskDate = startOfDay(parseISO(dueDate));
+    const today = startOfDay(new Date());
+    return taskDate < today;
+  } catch {
+    return false;
+  }
+}
+
+/**
  * Parses dueDate (YYYY-MM-DD) and optional dueTime (HH:mm) into a Date object
  */
 export function parseTaskDateTime(dueDate?: string, dueTime?: string): Date | null {
