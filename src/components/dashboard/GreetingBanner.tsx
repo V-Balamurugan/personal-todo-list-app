@@ -33,7 +33,7 @@ export const GreetingBanner: React.FC = () => {
             </span>
           </div>
 
-          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight font-display">
+          <h1 className="text-xl sm:text-2xl md:text-3xl font-extrabold tracking-tight font-display">
             {greeting}
           </h1>
 
@@ -51,7 +51,7 @@ export const GreetingBanner: React.FC = () => {
         <button
           type="button"
           onClick={() => openCreateModal()}
-          className="py-2.5 px-5 bg-white text-indigo-700 hover:bg-indigo-50 font-bold text-xs sm:text-sm rounded-2xl shadow-md shadow-black/10 flex items-center gap-2 transition-all hover:scale-105 active:scale-95 flex-shrink-0"
+          className="w-full sm:w-auto justify-center py-3 sm:py-2.5 px-5 bg-white text-indigo-700 hover:bg-indigo-50 font-bold text-xs sm:text-sm rounded-2xl shadow-md shadow-black/10 flex items-center gap-2 transition-all active:scale-95 flex-shrink-0 touch-manipulation"
         >
           <Plus className="w-4 h-4 stroke-[2.5]" />
           <span>New Task</span>

@@ -72,3 +72,18 @@
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(51, 65, 85, 0.8);
 }
+
+/* Hide scrollbar for seamless horizontal mobile carousels/filter pills */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* iOS Safe Area bottom padding */
+.safe-bottom {
+  padding-bottom: max(0.75rem, env(safe-area-inset-bottom, 0px));
+}
+

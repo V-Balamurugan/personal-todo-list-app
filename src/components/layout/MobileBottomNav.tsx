@@ -14,7 +14,7 @@ export const MobileBottomNav: React.FC = () => {
   const { unreadCount, togglePanel } = useNotifications();
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-40 lg:hidden h-16 glass-panel border-t border-slate-200 dark:border-slate-800 px-4 flex items-center justify-around">
+    <nav className="fixed bottom-0 left-0 right-0 z-40 lg:hidden h-[calc(4rem+env(safe-area-inset-bottom,0px))] pb-[env(safe-area-inset-bottom,0px)] glass-panel border-t border-slate-200 dark:border-slate-800 px-4 flex items-center justify-around">
       {/* 1. Dashboard */}
       <button
         type="button"
@@ -22,7 +22,7 @@ export const MobileBottomNav: React.FC = () => {
           setSelectedCategory(null);
           setActiveView('dashboard');
         }}
-        className={`flex flex-col items-center gap-1 py-1 px-2 transition-colors ${
+        className={`flex flex-col items-center gap-1 py-1.5 px-3 rounded-xl transition-all touch-manipulation active:scale-95 ${
           activeView === 'dashboard'
             ? 'text-indigo-600 dark:text-indigo-400 font-bold'
             : 'text-slate-400 hover:text-slate-600 dark:hover:text-slate-200'
@@ -39,7 +39,7 @@ export const MobileBottomNav: React.FC = () => {
           setSelectedCategory(null);
           setActiveView('today');
         }}
-        className={`relative flex flex-col items-center gap-1 py-1 px-2 transition-colors ${
+        className={`relative flex flex-col items-center gap-1 py-1.5 px-3 rounded-xl transition-all touch-manipulation active:scale-95 ${
           activeView === 'today'
             ? 'text-indigo-600 dark:text-indigo-400 font-bold'
             : 'text-slate-400 hover:text-slate-600 dark:hover:text-slate-200'
@@ -48,7 +48,7 @@ export const MobileBottomNav: React.FC = () => {
         <Calendar className="w-5 h-5" />
         <span className="text-[10px]">Today</span>
         {todayCount > 0 && (
-          <span className="absolute top-0 right-1 w-2 h-2 rounded-full bg-indigo-600" />
+          <span className="absolute top-0.5 right-2 w-2 h-2 rounded-full bg-indigo-600" />
         )}
       </button>
 
@@ -56,7 +56,7 @@ export const MobileBottomNav: React.FC = () => {
       <button
         type="button"
         onClick={() => openCreateModal()}
-        className="w-12 h-12 -mt-5 rounded-full bg-gradient-to-tr from-indigo-600 to-violet-600 text-white flex items-center justify-center shadow-lg shadow-indigo-600/30 hover:scale-105 active:scale-95 transition-all"
+        className="w-12 h-12 -mt-5 rounded-full bg-gradient-to-tr from-indigo-600 to-violet-600 text-white flex items-center justify-center shadow-lg shadow-indigo-600/30 active:scale-90 transition-all touch-manipulation"
         aria-label="Create new task"
       >
         <Plus className="w-6 h-6 stroke-[2.5]" />
@@ -66,12 +66,12 @@ export const MobileBottomNav: React.FC = () => {
       <button
         type="button"
         onClick={togglePanel}
-        className="relative flex flex-col items-center gap-1 py-1 px-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors"
+        className="relative flex flex-col items-center gap-1 py-1.5 px-3 rounded-xl text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-all touch-manipulation active:scale-95"
       >
         <Bell className="w-5 h-5" />
         <span className="text-[10px]">Alerts</span>
         {unreadCount > 0 && (
-          <span className="absolute top-0 right-1 px-1 min-w-[14px] h-[14px] text-[9px] font-bold rounded-full bg-indigo-600 text-white flex items-center justify-center">
+          <span className="absolute top-0.5 right-1.5 px-1 min-w-[14px] h-[14px] text-[9px] font-bold rounded-full bg-indigo-600 text-white flex items-center justify-center">
             {unreadCount > 9 ? '9+' : unreadCount}
           </span>
         )}
@@ -84,7 +84,7 @@ export const MobileBottomNav: React.FC = () => {
           setSelectedCategory(null);
           setActiveView('settings');
         }}
-        className={`flex flex-col items-center gap-1 py-1 px-2 transition-colors ${
+        className={`flex flex-col items-center gap-1 py-1.5 px-3 rounded-xl transition-all touch-manipulation active:scale-95 ${
           activeView === 'settings'
             ? 'text-indigo-600 dark:text-indigo-400 font-bold'
             : 'text-slate-400 hover:text-slate-600 dark:hover:text-slate-200'

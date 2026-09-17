@@ -50,7 +50,7 @@ export const QuickAddInput: React.FC<QuickAddInputProps> = ({
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder={placeholder}
-            className="flex-1 bg-transparent border-none text-slate-900 dark:text-white placeholder-slate-400 text-sm font-medium focus:outline-none"
+            className="flex-1 bg-transparent border-none text-slate-900 dark:text-white placeholder-slate-400 text-base sm:text-sm font-medium focus:outline-none"
           />
 
           {/* Student & Fresher Templates Button */}
@@ -58,10 +58,10 @@ export const QuickAddInput: React.FC<QuickAddInputProps> = ({
             type="button"
             onClick={() => setIsTemplatesOpen(true)}
             title="Browse student & placement templates"
-            className="hidden sm:flex items-center gap-1 py-1.5 px-2.5 rounded-xl bg-indigo-50 dark:bg-indigo-950/70 text-indigo-700 dark:text-indigo-300 hover:bg-indigo-100 text-xs font-semibold transition-colors"
+            className="flex items-center gap-1 py-1.5 px-2 sm:px-2.5 rounded-xl bg-indigo-50 dark:bg-indigo-950/70 text-indigo-700 dark:text-indigo-300 hover:bg-indigo-100 text-xs font-semibold transition-colors flex-shrink-0 touch-manipulation active:scale-95"
           >
             <Sparkles className="w-3.5 h-3.5 text-indigo-500" />
-            <span>Templates</span>
+            <span className="hidden sm:inline">Templates</span>
           </button>
 
           {/* Detailed options modal trigger */}
@@ -69,7 +69,7 @@ export const QuickAddInput: React.FC<QuickAddInputProps> = ({
             type="button"
             onClick={() => openCreateModal({ title: title.trim() || undefined })}
             title="Open detailed task editor"
-            className="p-2 text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700/60 transition-colors"
+            className="p-2 text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700/60 transition-colors touch-manipulation active:scale-95"
           >
             <SlidersHorizontal className="w-4 h-4" />
           </button>
@@ -78,7 +78,7 @@ export const QuickAddInput: React.FC<QuickAddInputProps> = ({
           <button
             type="submit"
             disabled={!title.trim() || loading}
-            className="py-2 px-3.5 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-40 text-white text-xs font-semibold rounded-xl flex items-center gap-1.5 shadow-sm shadow-indigo-600/30 transition-all"
+            className="py-2 px-3 sm:px-3.5 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-40 text-white text-xs font-semibold rounded-xl flex items-center gap-1.5 shadow-sm shadow-indigo-600/30 transition-all touch-manipulation active:scale-95"
           >
             {loading ? (
               <Loader2 className="w-4 h-4 animate-spin" />

@@ -53,13 +53,13 @@ export const SubtaskList: React.FC<SubtaskListProps> = ({
         {subtasks.map((st) => (
           <div
             key={st.id}
-            className="flex items-center justify-between gap-2 p-2 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/60 dark:border-slate-700/60 group"
+            className="flex items-center justify-between gap-2 p-2 sm:p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/60 dark:border-slate-700/60 group"
           >
             <div className="flex items-center gap-2.5 flex-1 min-w-0 select-none">
               <button
                 type="button"
                 onClick={() => onToggle && onToggle(st.id)}
-                className={`w-4 h-4 rounded-md flex items-center justify-center transition-all flex-shrink-0 ${
+                className={`w-4 h-4 rounded-md flex items-center justify-center transition-all flex-shrink-0 touch-manipulation ${
                   st.completed
                     ? 'bg-indigo-600 text-white shadow-sm'
                     : 'border-2 border-slate-300 dark:border-slate-600 hover:border-indigo-500'
@@ -83,9 +83,10 @@ export const SubtaskList: React.FC<SubtaskListProps> = ({
               <button
                 type="button"
                 onClick={() => onRemoveSubtask(st.id)}
-                className="opacity-0 group-hover:opacity-100 p-1 text-slate-400 hover:text-rose-500 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 transition-all"
+                aria-label="Remove checklist item"
+                className="opacity-100 sm:opacity-0 sm:group-hover:opacity-100 p-1.5 text-slate-400 hover:text-rose-500 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 transition-all touch-manipulation"
               >
-                <X className="w-3 h-3" />
+                <X className="w-3.5 h-3.5" />
               </button>
             )}
           </div>
@@ -105,13 +106,13 @@ export const SubtaskList: React.FC<SubtaskListProps> = ({
               }
             }}
             placeholder="Add a checklist item..."
-            className="flex-1 px-3 py-1.5 text-xs bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+            className="flex-1 px-3 py-2 sm:py-1.5 text-base sm:text-xs bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-indigo-500"
           />
           <button
             type="button"
             onClick={handleAdd}
             disabled={!newSubtaskTitle.trim()}
-            className="p-1.5 px-3 bg-slate-200 hover:bg-indigo-600 hover:text-white dark:bg-slate-800 dark:hover:bg-indigo-600 text-slate-700 dark:text-slate-300 disabled:opacity-40 rounded-xl text-xs font-semibold flex items-center gap-1 transition-all"
+            className="py-2 px-3.5 sm:py-1.5 sm:px-3 bg-slate-200 hover:bg-indigo-600 hover:text-white dark:bg-slate-800 dark:hover:bg-indigo-600 text-slate-700 dark:text-slate-300 disabled:opacity-40 rounded-xl text-xs font-semibold flex items-center gap-1 transition-all touch-manipulation active:scale-95"
           >
             <Plus className="w-3.5 h-3.5" />
             <span>Add</span>

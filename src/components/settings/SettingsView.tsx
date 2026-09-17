@@ -81,44 +81,44 @@ export const SettingsView: React.FC = () => {
           Appearance & Theme
         </h3>
 
-        <div className="grid grid-cols-3 gap-3">
+        <div className="grid grid-cols-3 gap-2 sm:gap-3">
           <button
             type="button"
             onClick={() => setTheme('light')}
-            className={`p-4 rounded-2xl border text-center flex flex-col items-center gap-2 transition-all ${
+            className={`p-3 sm:p-4 rounded-2xl border text-center flex flex-col items-center gap-1.5 sm:gap-2 transition-all touch-manipulation active:scale-95 ${
               theme === 'light'
                 ? 'bg-indigo-50 dark:bg-indigo-950/60 border-indigo-600 text-indigo-700 dark:text-indigo-300 font-bold shadow-sm'
                 : 'bg-white dark:bg-slate-800/60 border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-50'
             }`}
           >
             <Sun className="w-5 h-5 text-amber-500" />
-            <span className="text-xs font-semibold">Light Mode</span>
+            <span className="text-[11px] sm:text-xs font-semibold">Light</span>
           </button>
 
           <button
             type="button"
             onClick={() => setTheme('dark')}
-            className={`p-4 rounded-2xl border text-center flex flex-col items-center gap-2 transition-all ${
+            className={`p-3 sm:p-4 rounded-2xl border text-center flex flex-col items-center gap-1.5 sm:gap-2 transition-all touch-manipulation active:scale-95 ${
               theme === 'dark'
                 ? 'bg-indigo-50 dark:bg-indigo-950/60 border-indigo-600 text-indigo-700 dark:text-indigo-300 font-bold shadow-sm'
                 : 'bg-white dark:bg-slate-800/60 border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-50'
             }`}
           >
             <Moon className="w-5 h-5 text-indigo-500" />
-            <span className="text-xs font-semibold">Dark Mode</span>
+            <span className="text-[11px] sm:text-xs font-semibold">Dark</span>
           </button>
 
           <button
             type="button"
             onClick={() => setTheme('system')}
-            className={`p-4 rounded-2xl border text-center flex flex-col items-center gap-2 transition-all ${
+            className={`p-3 sm:p-4 rounded-2xl border text-center flex flex-col items-center gap-1.5 sm:gap-2 transition-all touch-manipulation active:scale-95 ${
               theme === 'system'
                 ? 'bg-indigo-50 dark:bg-indigo-950/60 border-indigo-600 text-indigo-700 dark:text-indigo-300 font-bold shadow-sm'
                 : 'bg-white dark:bg-slate-800/60 border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-50'
             }`}
           >
             <Laptop className="w-5 h-5 text-slate-500" />
-            <span className="text-xs font-semibold">System Sync</span>
+            <span className="text-[11px] sm:text-xs font-semibold">System</span>
           </button>
         </div>
       </div>
@@ -232,11 +232,11 @@ export const SettingsView: React.FC = () => {
           Data Backup & Management
         </h3>
 
-        <div className="flex flex-wrap gap-3">
+        <div className="flex flex-col sm:flex-row flex-wrap gap-2.5 sm:gap-3">
           <button
             type="button"
             onClick={handleExportData}
-            className="py-2.5 px-4 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700/80 text-slate-700 dark:text-slate-200 text-xs font-semibold rounded-xl flex items-center gap-2 transition-colors"
+            className="w-full sm:w-auto justify-center py-2.5 px-4 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700/80 text-slate-700 dark:text-slate-200 text-xs font-semibold rounded-xl flex items-center gap-2 transition-colors touch-manipulation active:scale-95"
           >
             <Download className="w-4 h-4 text-indigo-500" />
             <span>Export Backup (JSON)</span>
@@ -246,7 +246,7 @@ export const SettingsView: React.FC = () => {
             type="button"
             onClick={handleClearCompleted}
             disabled={clearing}
-            className="py-2.5 px-4 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-rose-50 dark:hover:bg-rose-950/60 hover:text-rose-600 text-slate-700 dark:text-slate-200 text-xs font-semibold rounded-xl flex items-center gap-2 transition-colors"
+            className="w-full sm:w-auto justify-center py-2.5 px-4 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-rose-50 dark:hover:bg-rose-950/60 hover:text-rose-600 text-slate-700 dark:text-slate-200 text-xs font-semibold rounded-xl flex items-center gap-2 transition-colors touch-manipulation active:scale-95"
           >
             <Trash2 className="w-4 h-4 text-rose-500" />
             <span>Clear Completed Tasks</span>
@@ -256,7 +256,7 @@ export const SettingsView: React.FC = () => {
             <button
               type="button"
               onClick={handleResetSampleData}
-              className="py-2.5 px-4 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 text-slate-700 dark:text-slate-200 text-xs font-semibold rounded-xl flex items-center gap-2 transition-colors"
+              className="w-full sm:w-auto justify-center py-2.5 px-4 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 text-slate-700 dark:text-slate-200 text-xs font-semibold rounded-xl flex items-center gap-2 transition-colors touch-manipulation active:scale-95"
             >
               <RotateCcw className="w-4 h-4 text-amber-500" />
               <span>Reset Sample Todos</span>
@@ -266,7 +266,7 @@ export const SettingsView: React.FC = () => {
       </div>
 
       {/* 5. Account & Sign Out */}
-      <div className="glass-panel p-6 rounded-3xl border border-slate-200 dark:border-slate-800 flex items-center justify-between">
+      <div className="glass-panel p-6 rounded-3xl border border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
           <p className="text-sm font-bold text-slate-900 dark:text-white">
             Signed in as {user?.displayName || 'User'}
@@ -277,7 +277,7 @@ export const SettingsView: React.FC = () => {
         <button
           type="button"
           onClick={logout}
-          className="py-2 px-4 bg-rose-50 hover:bg-rose-100 dark:bg-rose-950/50 dark:hover:bg-rose-950 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-900 text-xs font-semibold rounded-xl flex items-center gap-1.5 transition-colors"
+          className="w-full sm:w-auto justify-center py-2.5 px-4 bg-rose-50 hover:bg-rose-100 dark:bg-rose-950/50 dark:hover:bg-rose-950 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-900 text-xs font-semibold rounded-xl flex items-center gap-1.5 transition-colors touch-manipulation active:scale-95"
         >
           <LogOut className="w-4 h-4" />
           <span>Sign Out</span>

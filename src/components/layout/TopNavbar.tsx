@@ -28,14 +28,15 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-30 h-16 glass-panel border-b border-slate-200 dark:border-slate-800 px-4 sm:px-6 flex items-center justify-between gap-4">
+    <header className="sticky top-0 z-30 h-16 glass-panel border-b border-slate-200 dark:border-slate-800 px-3 sm:px-6 flex items-center justify-between gap-2 sm:gap-4">
       {/* Left: Mobile hamburger & Search trigger */}
-      <div className="flex items-center gap-3 flex-1 max-w-md">
+      <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0 max-w-md">
         {onOpenMobileMenu && (
           <button
             type="button"
             onClick={onOpenMobileMenu}
-            className="p-2 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 lg:hidden transition-colors"
+            aria-label="Open menu"
+            className="p-2 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 lg:hidden transition-colors flex-shrink-0"
           >
             <Menu className="w-5 h-5" />
           </button>
@@ -45,13 +46,13 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
         <button
           type="button"
           onClick={onOpenSearch}
-          className="w-full max-w-xs flex items-center justify-between px-3.5 py-2 bg-slate-100 dark:bg-slate-800/80 hover:bg-slate-200 dark:hover:bg-slate-700/80 border border-slate-200 dark:border-slate-700 rounded-2xl text-xs sm:text-sm text-slate-400 transition-all group"
+          className="flex-1 max-w-[160px] sm:max-w-xs flex items-center justify-between px-2.5 sm:px-3.5 py-2 bg-slate-100 dark:bg-slate-800/80 hover:bg-slate-200 dark:hover:bg-slate-700/80 border border-slate-200 dark:border-slate-700 rounded-2xl text-xs sm:text-sm text-slate-400 transition-all group"
         >
-          <div className="flex items-center gap-2">
-            <Search className="w-4 h-4 text-slate-400 group-hover:text-indigo-500 transition-colors" />
-            <span>Search tasks...</span>
+          <div className="flex items-center gap-1.5 sm:gap-2 truncate">
+            <Search className="w-4 h-4 text-slate-400 group-hover:text-indigo-500 transition-colors flex-shrink-0" />
+            <span className="truncate">Search...</span>
           </div>
-          <kbd className="hidden sm:inline-block px-2 py-0.5 text-[10px] font-bold text-slate-400 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-md">
+          <kbd className="hidden sm:inline-block px-1.5 py-0.5 text-[10px] font-bold text-slate-400 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-md ml-1">
             Ctrl K
           </kbd>
         </button>

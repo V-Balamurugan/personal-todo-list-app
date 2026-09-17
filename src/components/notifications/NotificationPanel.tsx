@@ -225,7 +225,7 @@ export const NotificationPanel: React.FC = () => {
                         {formatRelativeTime(item.timestamp)}
                       </span>
                       {item.todoId && (
-                        <span className="text-[11px] font-medium text-indigo-600 dark:text-indigo-400 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <span className="text-[11px] font-medium text-indigo-600 dark:text-indigo-400 flex items-center gap-1 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
                           View Task <ExternalLink className="w-3 h-3" />
                         </span>
                       )}
@@ -237,7 +237,8 @@ export const NotificationPanel: React.FC = () => {
                       e.stopPropagation();
                       deleteNotification(item.id);
                     }}
-                    className="opacity-0 group-hover:opacity-100 p-1 text-slate-400 hover:text-rose-500 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-all absolute top-3 right-3"
+                    aria-label="Delete notification"
+                    className="opacity-100 sm:opacity-0 sm:group-hover:opacity-100 p-2 text-slate-400 hover:text-rose-500 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-all absolute top-2 right-2 touch-manipulation"
                   >
                     <X className="w-3.5 h-3.5" />
                   </button>

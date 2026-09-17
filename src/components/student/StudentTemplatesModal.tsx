@@ -56,19 +56,22 @@ export const StudentTemplatesModal: React.FC<StudentTemplatesModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fade-in">
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-slate-900/60 backdrop-blur-sm animate-fade-in">
       <div
-        className="w-full max-w-2xl max-h-[85vh] flex flex-col glass-modal rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-800 animate-slide-up"
+        className="w-full sm:max-w-2xl max-h-[92vh] sm:max-h-[85vh] flex flex-col glass-modal rounded-t-3xl sm:rounded-3xl shadow-2xl border-t sm:border border-slate-200 dark:border-slate-800 animate-slide-up"
         onClick={(e) => e.stopPropagation()}
       >
+        {/* Mobile grab bar indicator */}
+        <div className="w-12 h-1 bg-slate-300 dark:bg-slate-700 rounded-full mx-auto mt-2.5 sm:hidden" />
+
         {/* Header */}
-        <div className="px-6 py-5 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+        <div className="px-5 py-4 sm:px-6 sm:py-5 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <div className="p-2.5 rounded-2xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400">
+            <div className="p-2 sm:p-2.5 rounded-2xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400">
               <Sparkles className="w-5 h-5 text-indigo-500" />
             </div>
             <div>
-              <h3 className="text-xl font-bold text-slate-900 dark:text-white font-display">
+              <h3 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-white font-display">
                 Fresher & Student Templates
               </h3>
               <p className="text-xs text-slate-500 dark:text-slate-400">
@@ -78,14 +81,15 @@ export const StudentTemplatesModal: React.FC<StudentTemplatesModalProps> = ({
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+            aria-label="Close templates modal"
+            className="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors touch-manipulation"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Template Cards List */}
-        <div className="flex-1 overflow-y-auto p-6 space-y-3.5">
+        <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-3.5 pb-[max(1.5rem,env(safe-area-inset-bottom,0px))]">
           {STUDENT_TEMPLATES.map((tpl) => {
             const priority = PRIORITY_CONFIG[tpl.priority];
             const isAdded = addedTemplateId === tpl.id;
@@ -135,7 +139,7 @@ export const StudentTemplatesModal: React.FC<StudentTemplatesModalProps> = ({
                   type="button"
                   onClick={() => handleApplyTemplate(tpl)}
                   disabled={isAdded}
-                  className={`py-2 px-4 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-sm transition-all whitespace-nowrap self-stretch sm:self-auto justify-center ${
+                  className={`py-2.5 sm:py-2 px-4 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-sm transition-all whitespace-nowrap self-stretch sm:self-auto justify-center touch-manipulation active:scale-95 ${
                     isAdded
                       ? 'bg-emerald-600 text-white'
                       : 'bg-indigo-600 hover:bg-indigo-700 text-white shadow-indigo-600/20'

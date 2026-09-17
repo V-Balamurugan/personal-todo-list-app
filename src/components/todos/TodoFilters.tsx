@@ -79,14 +79,14 @@ export const TodoFilters: React.FC = () => {
       </div>
 
       {/* Priority Pill Filters */}
-      <div className="flex flex-wrap items-center gap-1.5">
-        <span className="text-xs font-semibold text-slate-400 mr-1 flex items-center gap-1">
+      <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0 sm:flex-wrap no-scrollbar">
+        <span className="text-xs font-semibold text-slate-400 mr-1 flex items-center gap-1 flex-shrink-0">
           <Filter className="w-3 h-3" /> Priority:
         </span>
 
         <button
           onClick={() => setPriorityFilter('all')}
-          className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition-all ${
+          className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition-all flex-shrink-0 ${
             priorityFilter === 'all'
               ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-900 shadow-sm'
               : 'bg-slate-100 dark:bg-slate-800/60 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700'
@@ -102,7 +102,7 @@ export const TodoFilters: React.FC = () => {
             <button
               key={p}
               onClick={() => setPriorityFilter(isSelected ? 'all' : p)}
-              className={`px-2.5 py-1 rounded-lg text-xs font-semibold border transition-all ${
+              className={`px-2.5 py-1 rounded-lg text-xs font-semibold border transition-all flex-shrink-0 ${
                 isSelected
                   ? `${config.badgeClass} shadow-sm ring-1 ring-indigo-500`
                   : 'bg-slate-100 dark:bg-slate-800/60 border-transparent text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700'
@@ -115,7 +115,7 @@ export const TodoFilters: React.FC = () => {
 
         {/* Selected Category Pill (if active) */}
         {selectedCategory && (
-          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold bg-indigo-50 dark:bg-indigo-950/70 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800">
+          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold bg-indigo-50 dark:bg-indigo-950/70 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 flex-shrink-0">
             Category: {selectedCategory}
             <button
               onClick={() => setSelectedCategory(null)}
@@ -129,9 +129,9 @@ export const TodoFilters: React.FC = () => {
         {hasActiveFilters && (
           <button
             onClick={handleReset}
-            className="text-xs text-rose-600 dark:text-rose-400 hover:underline font-medium ml-auto"
+            className="text-xs text-rose-600 dark:text-rose-400 hover:underline font-medium ml-auto flex-shrink-0 pl-1"
           >
-            Reset filters
+            Reset
           </button>
         )}
       </div>

@@ -63,7 +63,7 @@ export const ProductivitySummary: React.FC = () => {
             key={card.id}
             type="button"
             onClick={() => setActiveView(card.viewTarget)}
-            className="p-4 rounded-2xl border border-slate-200/80 dark:border-slate-800/80 bg-white/70 dark:bg-slate-900/60 hover:bg-white dark:hover:bg-slate-800 text-left transition-all hover:border-indigo-300 dark:hover:border-indigo-800 group"
+            className="p-3.5 sm:p-4 rounded-2xl border border-slate-200/80 dark:border-slate-800/80 bg-white/70 dark:bg-slate-900/60 hover:bg-white dark:hover:bg-slate-800 text-left transition-all hover:border-indigo-300 dark:hover:border-indigo-800 group touch-manipulation active:scale-[0.98]"
           >
             <div className="flex items-center justify-between mb-2">
               <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">

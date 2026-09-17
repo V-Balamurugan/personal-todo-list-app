@@ -7,7 +7,18 @@ import { NotificationPanel } from '../notifications/NotificationPanel';
 import { CreateTodoModal } from '../todos/CreateTodoModal';
 import { MainContentView } from '../views/MainContentView';
 import { useTodos } from '../../context/TodoContext';
-import { X, CheckCircle2 } from 'lucide-react';
+import {
+  X,
+  CheckCircle2,
+  LayoutDashboard,
+  Calendar,
+  Clock,
+  AlertTriangle,
+  CheckCircle,
+  ListTodo,
+  Tags,
+  Settings,
+} from 'lucide-react';
 
 export const AppLayout: React.FC = () => {
   const {
@@ -58,44 +69,50 @@ export const AppLayout: React.FC = () => {
 
             <div className="flex-1 overflow-y-auto py-4 space-y-1">
               {[
-                { id: 'dashboard', label: 'Dashboard' },
-                { id: 'today', label: 'Today', count: todayCount },
-                { id: 'upcoming', label: 'Upcoming' },
-                { id: 'overdue', label: 'Overdue', count: overdueCount, alert: true },
-                { id: 'completed', label: 'Completed', count: completedCount },
-                { id: 'all', label: 'All Todos', count: allCount },
-                { id: 'categories', label: 'Categories' },
-                { id: 'settings', label: 'Settings' },
-              ].map((item) => (
-                <button
-                  key={item.id}
-                  onClick={() => {
-                    setSelectedCategory(null);
-                    setActiveView(item.id as any);
-                    setIsMobileMenuOpen(false);
-                  }}
-                  className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-semibold transition-all ${
-                    activeView === item.id
-                      ? 'bg-indigo-600 text-white shadow-sm'
-                      : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
-                  }`}
-                >
-                  <span>{item.label}</span>
-                  {item.count !== undefined && item.count > 0 && (
-                    <span
-                      className={`text-xs px-2 py-0.5 rounded-full font-bold ${
-                        item.alert
-                          ? 'bg-rose-500 text-white'
-                          : activeView === item.id
-                          ? 'bg-white/20 text-white'
-                          : 'bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300'
-                      }`}
-                    >
-                      {item.count}
-                    </span>
-                  )}
-                </button>
-              ))}
+                { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
+                { id: 'today', label: 'Today', count: todayCount, icon: Calendar },
+                { id: 'upcoming', label: 'Upcoming', icon: Clock },
+                { id: 'overdue', label: 'Overdue', count: overdueCount, alert: true, icon: AlertTriangle },
+                { id: 'completed', label: 'Completed', count: completedCount, icon: CheckCircle },
+                { id: 'all', label: 'All Todos', count: allCount, icon: ListTodo },
+                { id: 'categories', label: 'Categories', icon: Tags },
+                { id: 'settings', label: 'Settings', icon: Settings },
+              ].map((item) => {
+                const Icon = item.icon;
+                return (
+                  <button
+                    key={item.id}
+                    onClick={() => {
+                      setSelectedCategory(null);
+                      setActiveView(item.id as any);
+                      setIsMobileMenuOpen(false);
+                    }}
+                    className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-semibold transition-all ${
+                      activeView === item.id
+                        ? 'bg-indigo-600 text-white shadow-sm'
+                        : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
+                    }`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <Icon className="w-4 h-4" />
+                      <span>{item.label}</span>
+                    </div>
+                    {item.count !== undefined && item.count > 0 && (
+                      <span
+                        className={`text-xs px-2 py-0.5 rounded-full font-bold ${
+                          item.alert
+                            ? 'bg-rose-500 text-white'
+                            : activeView === item.id
+                            ? 'bg-white/20 text-white'
+                            : 'bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300'
+                        }`}
+                      >
+                        {item.count}
+                      </span>
+                    )}
+                  </button>
+                );
+              })}
             </div>
           </div>
         </div>
@@ -109,8 +126,8 @@ export const AppLayout: React.FC = () => {
           onOpenMobileMenu={() => setIsMobileMenuOpen(true)}
         />
 
-        {/* Scrollable View Content */}
-        <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-6xl w-full mx-auto">
+        {/* Scrollable View Content with responsive bottom clearance for mobile nav */}
+        <main className="flex-1 p-3.5 sm:p-6 lg:p-8 pb-28 lg:pb-8 max-w-6xl w-full mx-auto">
           <MainContentView />
         </main>
       </div>

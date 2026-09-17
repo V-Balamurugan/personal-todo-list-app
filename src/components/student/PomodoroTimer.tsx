@@ -87,16 +87,16 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onClose }) => {
       </div>
 
       {/* Clock display & Controls */}
-      <div className="flex items-center gap-4">
+      <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4 w-full sm:w-auto">
         <div className="text-3xl sm:text-4xl font-black font-mono tracking-tight text-slate-900 dark:text-white">
           {formattedTime}
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-wrap justify-center">
           <button
             type="button"
             onClick={toggleTimer}
-            className={`py-2 px-4 rounded-xl font-bold text-xs flex items-center gap-1.5 shadow-sm transition-all ${
+            className={`py-2 px-4 rounded-xl font-bold text-xs flex items-center gap-1.5 shadow-sm transition-all touch-manipulation ${
               isRunning
                 ? 'bg-amber-500 hover:bg-amber-600 text-white'
                 : 'bg-indigo-600 hover:bg-indigo-700 text-white shadow-indigo-600/25'
@@ -119,7 +119,8 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onClose }) => {
             type="button"
             onClick={() => resetTimer(mode)}
             title="Reset timer"
-            className="p-2 rounded-xl text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+            aria-label="Reset timer"
+            className="p-2 rounded-xl text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 touch-manipulation transition-colors"
           >
             <RotateCcw className="w-4 h-4" />
           </button>
@@ -128,7 +129,7 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onClose }) => {
           <button
             type="button"
             onClick={() => resetTimer(mode === 'work' ? 'break' : 'work')}
-            className="text-[11px] font-semibold text-indigo-600 dark:text-indigo-400 hover:underline px-2"
+            className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:underline px-2 py-1"
           >
             {mode === 'work' ? 'Switch to Break' : 'Switch to Focus'}
           </button>

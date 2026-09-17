@@ -49,18 +49,22 @@ export const TodoCard: React.FC<TodoCardProps> = ({ todo, onEdit }) => {
       } p-4 sm:p-4.5`}
     >
       <div className="flex items-start gap-3">
-        {/* Simple Round Checkbox */}
+        {/* Simple Round Checkbox with mobile touch target */}
         <button
           type="button"
           onClick={() => toggleComplete(todo.id)}
           aria-label={todo.completed ? 'Mark incomplete' : 'Mark complete'}
-          className={`w-5 h-5 rounded-full mt-0.5 flex items-center justify-center transition-all flex-shrink-0 ${
-            todo.completed
-              ? 'bg-emerald-500 text-white'
-              : 'border-2 border-slate-300 dark:border-slate-600 hover:border-indigo-500 hover:scale-105'
-          }`}
+          className="p-1.5 -ml-1.5 -mt-1.5 rounded-full flex items-center justify-center flex-shrink-0 touch-manipulation"
         >
-          {todo.completed && <Check className="w-3 h-3 stroke-[3]" />}
+          <div
+            className={`w-5 h-5 rounded-full flex items-center justify-center transition-all ${
+              todo.completed
+                ? 'bg-emerald-500 text-white shadow-sm'
+                : 'border-2 border-slate-300 dark:border-slate-600 hover:border-indigo-500 hover:scale-105'
+            }`}
+          >
+            {todo.completed && <Check className="w-3 h-3 stroke-[3]" />}
+          </div>
         </button>
 
         {/* Task Core Content */}
@@ -116,12 +120,12 @@ export const TodoCard: React.FC<TodoCardProps> = ({ todo, onEdit }) => {
           )}
 
           {/* Checklist footer */}
-          <div className="flex items-center gap-3 mt-2">
+          <div className="flex items-center gap-2 sm:gap-3 mt-2 flex-wrap">
             {subtasksCount > 0 && (
               <button
                 type="button"
                 onClick={() => setShowSubtasks(!showSubtasks)}
-                className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 flex items-center gap-1 hover:underline"
+                className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 flex items-center gap-1 hover:underline touch-manipulation"
               >
                 <span>
                   Checklist ({completedSubtasks}/{subtasksCount})
@@ -136,7 +140,7 @@ export const TodoCard: React.FC<TodoCardProps> = ({ todo, onEdit }) => {
                   type="button"
                   onClick={() => rescheduleToToday(todo.id)}
                   title="Move deadline to Today"
-                  className="text-xs font-bold text-rose-600 dark:text-rose-400 hover:text-rose-700 dark:hover:text-rose-300 hover:underline flex items-center gap-1 bg-rose-50 dark:bg-rose-950/60 px-2 py-0.5 rounded-lg border border-rose-200/80 dark:border-rose-900/80 transition-colors"
+                  className="text-xs font-bold text-rose-600 dark:text-rose-400 hover:text-rose-700 dark:hover:text-rose-300 hover:underline flex items-center gap-1 bg-rose-50 dark:bg-rose-950/60 px-2 py-0.5 rounded-lg border border-rose-200/80 dark:border-rose-900/80 transition-colors touch-manipulation active:scale-95"
                 >
                   <RotateCcw className="w-3 h-3" />
                   <span>Move to Today</span>
@@ -145,7 +149,7 @@ export const TodoCard: React.FC<TodoCardProps> = ({ todo, onEdit }) => {
                   type="button"
                   onClick={() => rescheduleToTomorrow(todo.id)}
                   title="Move deadline to Tomorrow"
-                  className="text-xs font-semibold text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 hover:underline flex items-center gap-1 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-lg border border-slate-200 dark:border-slate-700 transition-colors"
+                  className="text-xs font-semibold text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 hover:underline flex items-center gap-1 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-lg border border-slate-200 dark:border-slate-700 transition-colors touch-manipulation active:scale-95"
                 >
                   <ArrowRight className="w-3 h-3" />
                   <span>To Tomorrow</span>
@@ -167,15 +171,16 @@ export const TodoCard: React.FC<TodoCardProps> = ({ todo, onEdit }) => {
         </div>
 
         {/* Quick action buttons */}
-        <div className="flex items-center gap-0.5 opacity-80 sm:opacity-0 group-hover:opacity-100 transition-opacity">
+        <div className="flex items-center gap-1 sm:gap-0.5 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity flex-shrink-0">
           {onEdit && !todo.completed && (
             <button
               type="button"
               onClick={() => onEdit(todo)}
               title="Edit"
-              className="p-1.5 text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"
+              aria-label="Edit task"
+              className="p-2 text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 touch-manipulation transition-colors"
             >
-              <Edit3 className="w-3.5 h-3.5" />
+              <Edit3 className="w-4 h-4 sm:w-3.5 sm:h-3.5" />
             </button>
           )}
 
@@ -183,9 +188,10 @@ export const TodoCard: React.FC<TodoCardProps> = ({ todo, onEdit }) => {
             type="button"
             onClick={() => deleteTodo(todo.id)}
             title="Delete"
-            className="p-1.5 text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"
+            aria-label="Delete task"
+            className="p-2 text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 touch-manipulation transition-colors"
           >
-            <Trash2 className="w-3.5 h-3.5" />
+            <Trash2 className="w-4 h-4 sm:w-3.5 sm:h-3.5" />
           </button>
         </div>
       </div>
