@@ -2,15 +2,18 @@ import { initializeApp, getApps, type FirebaseApp } from 'firebase/app';
 import { getAuth, type Auth } from 'firebase/auth';
 import {
   initializeFirestore,
+  getFirestore,
   persistentLocalCache,
   persistentMultipleTabManager,
   type Firestore,
 } from 'firebase/firestore';
+import { getDatabase, type Database } from 'firebase/database';
 
 export interface FirebaseConfig {
   apiKey: string;
   authDomain: string;
   projectId: string;
+  databaseURL?: string;
   storageBucket?: string;
   messagingSenderId?: string;
   appId?: string;
@@ -21,13 +24,14 @@ const LOCAL_STORAGE_CONFIG_KEY = 'taskpulse_firebase_config';
 
 // Default project configuration provided by user
 const DEFAULT_FIREBASE_CONFIG: FirebaseConfig = {
-  apiKey: "AIzaSyC2SQDkw33dkFcIVGNVqLAOb9O_19ArFpQ",
-  authDomain: "todo-list-app-b3c33.firebaseapp.com",
-  projectId: "todo-list-app-b3c33",
-  storageBucket: "todo-list-app-b3c33.firebasestorage.app",
-  messagingSenderId: "602416508290",
-  appId: "1:602416508290:web:b7a9e71abd806cbf7cb39b",
-  measurementId: "G-D782790J19",
+  apiKey: "AIzaSyC4d_WoTibSThR8TVoOzhgQ_rTpCxSRjD0",
+  authDomain: "todo-app-d8285.firebaseapp.com",
+  projectId: "todo-app-d8285",
+  databaseURL: "https://todo-app-d8285-default-rtdb.asia-southeast1.firebasedatabase.app",
+  storageBucket: "todo-app-d8285.firebasestorage.app",
+  messagingSenderId: "587574075884",
+  appId: "1:587574075884:web:717eb5a61fe30c69b820c9",
+  measurementId: "G-ES5EHW18DW",
 };
 
 /**
@@ -41,7 +45,12 @@ export function getFirebaseConfig(): FirebaseConfig | null {
     if (savedConfig) {
       const parsed = JSON.parse(savedConfig);
       if (parsed.apiKey && parsed.projectId) {
-        return parsed;
+        return {
+          ...parsed,
+          databaseURL:
+            parsed.databaseURL ||
+            `https://${parsed.projectId}-default-rtdb.asia-southeast1.firebasedatabase.app`,
+        };
       }
     }
   } catch {
@@ -57,6 +66,9 @@ export function getFirebaseConfig(): FirebaseConfig | null {
       apiKey: envApiKey,
       authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || `${envProjectId}.firebaseapp.com`,
       projectId: envProjectId,
+      databaseURL:
+        import.meta.env.VITE_FIREBASE_DATABASE_URL ||
+        `https://${envProjectId}-default-rtdb.asia-southeast1.firebasedatabase.app`,
       storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || `${envProjectId}.appspot.com`,
       messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || '',
       appId: import.meta.env.VITE_FIREBASE_APP_ID || '',
@@ -84,6 +96,7 @@ export function clearCustomFirebaseConfig(): void {
 let app: FirebaseApp | null = null;
 let auth: Auth | null = null;
 let db: Firestore | null = null;
+let rtdb: Database | null = null;
 
 const config = getFirebaseConfig();
 
@@ -97,20 +110,32 @@ if (config) {
 
     auth = getAuth(app);
 
-    // Initialize Firestore with offline persistence
+    // Initialize Firebase Realtime Database
+    try {
+      rtdb = getDatabase(app);
+    } catch (rtdbErr) {
+      console.warn('Firebase Realtime Database initialization notice:', rtdbErr);
+    }
+
+    // Initialize Firestore with offline persistence and ignoreUndefinedProperties
     try {
       db = initializeFirestore(app, {
+        ignoreUndefinedProperties: true,
         localCache: persistentLocalCache({
           tabManager: persistentMultipleTabManager(),
         }),
       });
     } catch {
-      // Fallback if multiple tab cache isn't available
-      db = initializeFirestore(app, {});
+      try {
+        db = getFirestore(app);
+      } catch (e) {
+        console.warn('Could not initialize or get Firestore:', e);
+        db = null;
+      }
     }
   } catch (error) {
     console.warn('Firebase initialization notice:', error);
   }
 }
 
-export { app, auth, db };
+export { app, auth, db, rtdb };

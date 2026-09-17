@@ -19,6 +19,7 @@ import { TodoList } from '../todos/TodoList';
 import { SettingsView } from '../settings/SettingsView';
 import { DEFAULT_CATEGORIES } from '../../types/todo';
 import { PomodoroTimer } from '../student/PomodoroTimer';
+import { DatabaseStatusBanner } from '../dashboard/DatabaseStatusBanner';
 
 export const MainContentView: React.FC = () => {
   const [showPomodoro, setShowPomodoro] = useState(false);
@@ -49,6 +50,9 @@ export const MainContentView: React.FC = () => {
       <div className="space-y-6 pb-16 animate-fade-in">
         {/* Personalized Banner */}
         <GreetingBanner />
+
+        {/* Database Sync Status Banner */}
+        <DatabaseStatusBanner />
 
         {/* Overdue Urgent Alert (if any) */}
         <UrgentAlertsCard />

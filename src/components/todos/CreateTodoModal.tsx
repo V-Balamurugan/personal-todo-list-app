@@ -8,6 +8,8 @@ import {
   Bell,
   CheckCircle2,
   Plus,
+  Loader2,
+  AlertCircle,
 } from 'lucide-react';
 import type { Todo, Priority, ReminderOffset, Subtask } from '../../types/todo';
 import { DEFAULT_CATEGORIES, PRIORITY_CONFIG } from '../../types/todo';
@@ -46,8 +48,12 @@ export const CreateTodoModal: React.FC<CreateTodoModalProps> = ({
   const [subtasks, setSubtasks] = useState<Subtask[]>([]);
   const [customCategory, setCustomCategory] = useState('');
   const [isAddingCustomCategory, setIsAddingCustomCategory] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   useEffect(() => {
+    setSubmitError(null);
+    setIsSubmitting(false);
     if (preset) {
       setTitle(preset.title || '');
       setDescription(preset.description || '');
@@ -114,38 +120,48 @@ export const CreateTodoModal: React.FC<CreateTodoModalProps> = ({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!title.trim()) return;
+    if (!title.trim() || isSubmitting) return;
 
-    const chosenCategory = isAddingCustomCategory && customCategory.trim()
-      ? customCategory.trim()
-      : category;
+    setIsSubmitting(true);
+    setSubmitError(null);
 
-    if (isEditing && preset?.id) {
-      await updateTodo(preset.id, {
-        title: title.trim(),
-        description: description.trim() || undefined,
-        dueDate: dueDate || undefined,
-        dueTime: dueTime || undefined,
-        priority,
-        category: chosenCategory,
-        reminder,
-        subtasks,
-      });
-    } else {
-      await addTodo({
-        title: title.trim(),
-        description: description.trim() || undefined,
-        dueDate: dueDate || undefined,
-        dueTime: dueTime || undefined,
-        priority,
-        category: chosenCategory,
-        completed: false,
-        subtasks,
-        reminder,
-      });
+    try {
+      const chosenCategory = isAddingCustomCategory && customCategory.trim()
+        ? customCategory.trim()
+        : category;
+
+      if (isEditing && preset?.id) {
+        await updateTodo(preset.id, {
+          title: title.trim(),
+          description: description.trim(),
+          dueDate: dueDate || getTodayDateString(),
+          dueTime: dueTime || '18:00',
+          priority,
+          category: chosenCategory,
+          reminder,
+          subtasks,
+        });
+      } else {
+        await addTodo({
+          title: title.trim(),
+          description: description.trim(),
+          dueDate: dueDate || getTodayDateString(),
+          dueTime: dueTime || '18:00',
+          priority,
+          category: chosenCategory,
+          completed: false,
+          subtasks,
+          reminder,
+        });
+      }
+
+      onClose();
+    } catch (err: any) {
+      console.error('Failed to save todo:', err);
+      setSubmitError(err?.message || 'Failed to save task. Storing locally.');
+    } finally {
+      setIsSubmitting(false);
     }
-
-    onClose();
   };
 
   return (
@@ -178,6 +194,13 @@ export const CreateTodoModal: React.FC<CreateTodoModalProps> = ({
 
         {/* Scrollable Form Body */}
         <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4 sm:space-y-5">
+          {submitError && (
+            <div className="p-3 text-xs text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-950/40 rounded-xl flex items-center gap-2 border border-rose-200 dark:border-rose-900">
+              <AlertCircle className="w-4 h-4 flex-shrink-0" />
+              <span>{submitError}</span>
+            </div>
+          )}
+
           {/* Title */}
           <div>
             <label className="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
@@ -424,11 +447,20 @@ export const CreateTodoModal: React.FC<CreateTodoModalProps> = ({
             </button>
             <button
               type="submit"
-              disabled={!title.trim()}
+              disabled={!title.trim() || isSubmitting}
               className="flex-1 py-3 px-4 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 disabled:opacity-50 text-white font-semibold rounded-xl shadow-lg shadow-indigo-600/25 flex items-center justify-center gap-2 transition-all touch-manipulation active:scale-95"
             >
-              <Plus className="w-5 h-5" />
-              <span>{isEditing ? 'Save Changes' : 'Create Task'}</span>
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                  <span>Saving...</span>
+                </>
+              ) : (
+                <>
+                  <Plus className="w-5 h-5" />
+                  <span>{isEditing ? 'Save Changes' : 'Create Task'}</span>
+                </>
+              )}
             </button>
           </div>
         </form>

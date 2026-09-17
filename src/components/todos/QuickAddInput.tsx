@@ -26,6 +26,7 @@ export const QuickAddInput: React.FC<QuickAddInputProps> = ({
     try {
       await addTodo({
         title: title.trim(),
+        description: '',
         dueDate: getTodayDateString(),
         dueTime: '18:00',
         priority: 'medium',
@@ -34,8 +35,8 @@ export const QuickAddInput: React.FC<QuickAddInputProps> = ({
         subtasks: [],
       });
       setTitle('');
-    } catch {
-      // ignore
+    } catch (err) {
+      console.error('Failed to add quick task:', err);
     } finally {
       setLoading(false);
     }
